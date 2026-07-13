@@ -22,3 +22,41 @@
 ## Project Overview
 Customer segmentation on a UK-based e-commerce dataset (1M+ transactions).
 Customers scored and grouped into **4 segments** with actionable marketing recommendations.
+
+
+## Dataset
+- Source: Online Retail II UCI Dataset (Kaggle)
+- 1 million+ transactions from a UK online retailer (2009–2011)
+- 5,881 unique customers after cleaning
+
+## Key Findings
+- Champions (29% of customers) contribute 80.8% of total revenue
+- 1,787 customers are At Risk — the largest segment, requiring immediate attention
+- K-Means clustering (k=4) validated the manual RFM segments
+- Lost customers average 547 days since last purchase with only 1 order
+
+## Segments & Recommendations
+| Segment | Criteria | Strategy |
+|---|---|---|
+| Champions | Score 10–12 | Reward, upsell, ask for reviews |
+| Loyal | Score 7–9 | Loyalty programme, personalised offers |
+| At Risk | Score 4–6 | Win-back email, time-limited discount |
+| Lost | Score 3 | Re-engage only with significant offer |
+
+## Tech Stack
+- Python, Pandas, NumPy
+- Matplotlib, Seaborn
+- Scikit-learn (KMeans, StandardScaler)
+- Openpyxl (Excel export)
+- Streamlit (interactive web app)
+
+## How to Run the Notebook
+1. Clone the repo
+2. Install dependencies: `pip install pandas numpy matplotlib seaborn scikit-learn openpyxl`
+3. Open `rfm_analysis.ipynb` in VSCode or Jupyter
+
+## How to Run the Streamlit App
+1. Install Streamlit: `pip install streamlit`
+2. Run: `streamlit run app.py`
+3. Enter customer Recency, Frequency and Monetary values to get their segment 
+   and recommended action
