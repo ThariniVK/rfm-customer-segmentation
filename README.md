@@ -50,13 +50,13 @@ Customers scored and grouped into **4 segments** with actionable marketing recom
 - Openpyxl (Excel export)
 - Streamlit (interactive web app)
 
-## How to Run the Notebook
-1. Clone the repo
-2. Install dependencies: `pip install pandas numpy matplotlib seaborn scikit-learn openpyxl`
-3. Open `rfm_analysis.ipynb` in VSCode or Jupyter
+## How to Run
+1. Download the dataset from Kaggle: [Online Retail II UCI](https://www.kaggle.com/datasets/mashlyn/online-retail-ii-uci)
+2. Place the CSV in the project folder
+3. Install dependencies: `pip install pandas numpy matplotlib seaborn scikit-learn openpyxl`
+4. Open `rfm_analysis.ipynb` in VSCode or Jupyter
+5. Run all cells in order
 
 ## How to Run the Streamlit App
 1. Install Streamlit: `pip install streamlit`
 2. Run: `streamlit run app.py`
-3. Enter customer Recency, Frequency and Monetary values to get their segment 
-   and recommended action
