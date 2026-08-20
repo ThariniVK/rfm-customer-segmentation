@@ -9,7 +9,7 @@
 | 💰 Monetary | How much do they spend? | High spenders drive the most revenue |
 
 ## Why RFM?
-> A simple, interpretable method used by marketing teams worldwide to identify best customers, spot churn risk early, and personalise campaigns — no complex ML required.
+> A simple, interpretable method used by marketing teams worldwide to identify best customers, spot churn risk early, and personalise campaigns.
 
 ## Who Uses It?
 | Industry | Use Case |
@@ -31,7 +31,7 @@ Customers scored and grouped into **4 segments** with actionable marketing recom
 
 ## Key Findings
 - Champions (29% of customers) contribute 80.8% of total revenue
-- 1,787 customers are At Risk — the largest segment, requiring immediate attention
+- 1,787 customers are At Risk the largest segment, requiring immediate attention
 - K-Means clustering (k=4) validated the manual RFM segments
 - Lost customers average 547 days since last purchase with only 1 order
 
