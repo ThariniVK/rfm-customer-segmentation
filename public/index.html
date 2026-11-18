@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RFM Customer Segmentation</title>
+    <meta name="description" content="Score a customer by recency, frequency and spend, and explore the segments of 5,881 online-retail customers." />
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="app.js"></script>
+  </head>
+  <body>
+    <header class="hero">
+      <div class="wrap">
+        <p class="eyebrow">Customer analytics</p>
+        <h1>RFM Customer Segmentation</h1>
+        <p class="lead">
+          Who are the best customers, and who is about to leave? Each customer is scored on
+          <strong>Recency</strong> (days since last order), <strong>Frequency</strong> (number of
+          orders) and <strong>Monetary</strong> value (total spend), then grouped into four segments.
+        </p>
+        <p class="source" id="source"></p>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="panel scorer" aria-labelledby="scorer-title">
+        <div>
+          <h2 id="scorer-title">Score a customer</h2>
+          <p class="muted">Results update as you type.</p>
+          <form id="scorer" novalidate>
+            <label>
+              <span>Days since last purchase</span>
+              <input name="recency" type="number" inputmode="numeric" min="0" step="1" value="50" required />
+            </label>
+            <label>
+              <span>Number of orders</span>
+              <input name="frequency" type="number" inputmode="numeric" min="1" step="1" value="5" required />
+            </label>
+            <label>
+              <span>Total spend (£)</span>
+              <input name="monetary" type="number" inputmode="decimal" min="0" step="0.01" value="500" required />
+            </label>
+          </form>
+        </div>
+        <div class="result" id="result" aria-live="polite"></div>
+      </section>
+
+      <section aria-labelledby="segments-title">
+        <h2 id="segments-title">The four segments</h2>
+        <div class="cards" id="segment-cards"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="revenue-title">
+        <h2 id="revenue-title">Share of customers vs share of revenue</h2>
+        <p class="muted" id="revenue-note"></p>
+        <div class="stack-chart" id="revenue-chart"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="scatter-title">
+        <h2 id="scatter-title">Every dot is a customer</h2>
+        <p class="muted">
+          A random sample of <span id="sample-size"></span> customers. Further right means they
+          have not ordered for longer; higher means they spent more (log scale). Your scored
+          customer appears as the ringed dot.
+        </p>
+        <div class="legend" id="legend"></div>
+        <div class="scatter" id="scatter"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="kmeans-title">
+        <h2 id="kmeans-title">Checking the segments with K-Means</h2>
+        <p class="muted">
+          K-Means clustering (k = 4) on the standardised R, F and M values was used as an
+          independent check. Champions and Lost line up with a cluster; Loyal and At Risk are
+          mixed, so the score-based segments are the clearer ones for business use.
+        </p>
+        <div class="table-scroll"><table id="kmeans"></table></div>
+      </section>
+
+      <section class="panel notes" aria-labelledby="method-title">
+        <h2 id="method-title">How the scoring works</h2>
+        <ul>
+          <li>Each of R, F and M is scored 1–4 by quartile of the 5,881 customers. The cut-offs are
+            <span id="cutoffs"></span>.</li>
+          <li>The three scores are added (3–12): Champions 10–12, Loyal 7–9, At Risk 4–6, Lost 3.</li>
+          <li>This page gives the same recency and spend score as the notebook for every customer,
+            and the same segment for about 96% of them. The difference is order counts: the notebook
+            splits customers with the same number of orders by their row order, which a calculator
+            for new customers cannot reproduce.</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="wrap muted">
+      Analysis in <code>rfm_analysis.ipynb</code>. Data: Online Retail II, UCI Machine Learning Repository.
+    </footer>
+  </body>
+</html>
