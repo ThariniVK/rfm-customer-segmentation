@@ -57,6 +57,21 @@ Customers scored and grouped into **4 segments** with actionable marketing recom
 4. Open `rfm_analysis.ipynb` in VSCode or Jupyter
 5. Run all cells in order
 
+## Web App
+
+A static web version lives in `public/` and is ready to host on Vercel (no server needed):
+
+- **Score a customer**: enter days since last purchase, number of orders and total spend to get the segment and recommended action.
+- **Dashboard**: segment sizes, share of customers vs share of revenue, a scatter of customers, and the K-Means check.
+
+Run it locally: `python3 -m http.server 8080 --directory public`, then open http://localhost:8080.
+Test the scoring: `npm test` (checks the web scorer against all 5,881 customers in `rfm_report.xlsx`).
+After re-running the notebook, refresh the web data: `python scripts/build_web_data.py`.
+
+**Deploy on Vercel:** import this repository at vercel.com/new. `vercel.json` already tells Vercel to serve the `public/` folder, so no settings need changing.
+
+Note: the web scorer uses quartile cut-offs recomputed from `rfm_report.xlsx` (spend £341.90 / £865.60 / £2,247.72). The Streamlit `app.py` still has older spend cut-offs (£347.80 / £897.62 / £2,304.18).
+
 ## How to Run the Streamlit App
 1. Install Streamlit: `pip install streamlit`
 2. Run: `streamlit run app.py`
