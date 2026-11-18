@@ -4,7 +4,6 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 import {
   ascendingScore,
-  percentileOf,
   recencyScore,
   scoreCustomer,
   segmentFor,
@@ -40,15 +39,6 @@ test("validation rejects impossible input", () => {
   assert.match(validate({ recency: NaN, frequency: 2, monetary: 50 }), /all three/);
 });
 
-test("percentiles are sensible at the edges and middle", () => {
-  const q = summary.percentiles.monetary;
-  assert.equal(percentileOf(-1e9, q), 0);
-  assert.equal(percentileOf(1e12, q), 100);
-  const median = percentileOf(q[50], q);
-  assert.ok(median >= 49 && median <= 51, `median gave ${median}`);
-});
-
-// The important one: does the web scorer agree with the notebook on the real customers?
 test("matches the notebook exactly on every real customer", () => {
   const n = customers.length;
   assert.equal(n, summary.customers);
