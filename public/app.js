@@ -1,4 +1,4 @@
-import { percentileOf, scoreCustomer, SEGMENTS, validate } from "./rfm.js";
+import { scoreCustomer, SEGMENTS, validate } from "./rfm.js";
 
 const COLORS = {
   Champions: "var(--champions)",
@@ -49,7 +49,7 @@ function renderHeadline(data) {
 // ------------------------------------------------------------------ segment table
 function renderSegments(data) {
   $("segments-note").textContent =
-    "From best to worst. Last order, orders and spend are per customer: averages, except spend, which is the median.";
+    "Last order and orders are averages per customer; spend is the median.";
   const head = el("tr", {}, [
     "Segment", "Score", "Customers", "Share", "Revenue", "Last order", "Orders", "Median spend", "What to do",
   ].map((h) => el("th", { scope: "col", text: h })));
@@ -74,7 +74,7 @@ function renderRevenue(data) {
   const champs = bySegment(data, "Champions");
   $("revenue-note").textContent =
     `Champions are ${pct(champs.customer_pct)} of customers but brought in ${pct(champs.revenue_pct)} of the ` +
-    `${gbp.format(data.revenue)} total. Keeping them is worth more than anything else here.`;
+    `${gbp.format(data.revenue)} total.`;
 
   const row = (label, key) =>
     el("div", { class: "stack-row" }, [
@@ -131,7 +131,6 @@ function renderScatter(data) {
   }
   root.append(dots);
 
-  // Written notes, placed from the data so they follow it if the analysis changes.
   const note = (seg, text, dx, dy, anchor) => {
     const s = bySegment(data, seg);
     const px = x(s.avg_recency), py = y(s.median_monetary);
@@ -177,7 +176,6 @@ function renderResult(data) {
 
   const s = scoreCustomer(customer, data.thresholds);
   const seg = bySegment(data, s.segment);
-  const spendPct = percentileOf(customer.monetary, data.percentiles.monetary);
   const score = (label, value) => el("div", {}, [el("span", { text: label }), el("strong", { text: value })]);
 
   result.style.setProperty("--seg", COLORS[s.segment]);
@@ -191,12 +189,7 @@ function renderResult(data) {
       score("Total", `${s.total}/12`),
     ]),
     el("p", { class: "action" }, [el("strong", { text: "What to do: " }), seg.strategy]),
-    el("p", {
-      class: "small",
-      text:
-        `Spends more than about ${spendPct}% of customers. ` +
-        `${num.format(seg.customers)} customers (${pct(seg.customer_pct)}) are in this segment.`,
-    }),
+    el("p", { class: "small", text: `${num.format(seg.customers)} customers (${pct(seg.customer_pct)}) are in this segment.` }),
   );
 
   if (you && scale) {

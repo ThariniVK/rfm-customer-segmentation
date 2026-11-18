@@ -1,10 +1,6 @@
-"""Turn rfm_report.xlsx (written by rfm_analysis.ipynb) into the data the web app reads.
+"""Export rfm_report.xlsx to the web app's data. Run after re-running the notebook.
 
-Run after re-running the notebook:   python scripts/build_web_data.py
-
-Writes:
-  public/data/summary.json      segment statistics, scoring thresholds, chart sample
-  tests/fixtures/customers.json every customer's R/F/M and segment, to test the JS scorer
+Writes public/data/summary.json (used by the site) and tests/fixtures/customers.json (used by npm test).
 """
 
 from __future__ import annotations
@@ -12,7 +8,6 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -36,7 +31,7 @@ def main() -> None:
     df = pd.read_excel(REPORT, sheet_name="All Customers")
     revenue = df["Monetary"].sum()
 
-    # Quartile cut-offs, computed exactly as the notebook does for its Streamlit thresholds.
+    # Quartile cut-offs, the same values the notebook prints.
     thresholds = {
         col.lower(): [round(float(v), 2) for v in df[col].quantile([0.25, 0.5, 0.75])]
         for col in ["Recency", "Frequency", "Monetary"]
@@ -61,14 +56,6 @@ def main() -> None:
             }
         )
 
-    # 101 quantiles per metric, so the page can say "spends more than 72% of customers".
-    qs = np.linspace(0, 1, 101)
-    percentiles = {
-        col.lower(): [round(float(v), 2) for v in df[col].quantile(qs)]
-        for col in ["Recency", "Frequency", "Monetary"]
-    }
-
-    # Same-size random sample per segment would distort the picture; sample proportionally.
     sample = df.sample(n=min(SAMPLE_SIZE, len(df)), random_state=42)
     points = [
         [int(r.Recency), round(float(r.Monetary), 2), int(r.Frequency), ORDER.index(r.Segment)]
@@ -84,7 +71,6 @@ def main() -> None:
         "revenue": round(float(revenue), 2),
         "thresholds": thresholds,
         "segments": segments,
-        "percentiles": percentiles,
         "scatter": {"columns": ["recency", "monetary", "frequency", "segment_index"], "points": points},
         "kmeans": {
             "clusters": [int(c) for c in crosstab.columns],

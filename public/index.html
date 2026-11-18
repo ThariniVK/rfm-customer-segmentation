@@ -26,10 +26,9 @@
       <p class="kicker">Customer segmentation · <span id="source"></span></p>
       <h1>Who are the best customers, and who is slipping away?</h1>
       <p class="standfirst">
-        I scored every customer of a UK online retailer on three things: how
-        <strong>recently</strong> they last ordered, how <strong>often</strong> they order and how much they
-        <strong>spend</strong>. Adding the scores up splits the customer base into four groups, each needing a
-        different marketing approach.
+        I scored each customer of a UK online retailer on how <strong>recently</strong> they ordered, how
+        <strong>often</strong> they order and how much they <strong>spend</strong>, then grouped them into four
+        segments.
       </p>
       <dl class="headline-stats" id="headline-stats"></dl>
     </header>
@@ -84,8 +83,8 @@
           <h2 id="scatter-title">Every dot is a customer</h2>
         </div>
         <p class="lede">
-          A random sample of <span id="sample-size"></span> customers. Further right means longer since
-          their last order; higher means more spent (log scale). The customer you scored above is the ringed dot.
+          A sample of <span id="sample-size"></span> customers. Right = longer since last order, up = more
+          spent (log scale). The ringed dot is the customer you scored.
         </p>
         <div class="legend" id="legend"></div>
         <figure class="scatter" id="scatter"></figure>
@@ -97,9 +96,8 @@
           <h2 id="kmeans-title">A second opinion from K-Means</h2>
         </div>
         <p class="lede">
-          As a check, I also let K-Means clustering (k = 4) group the customers on their standardised
-          recency, frequency and spend. It agrees on the extremes, Champions and Lost, but cannot separate
-          Loyal from At Risk, so the score-based segments are the more useful ones for marketing.
+          K-Means (k = 4) on standardised R, F and M matches Champions and Lost but mixes Loyal and At Risk,
+          so I kept the score-based segments.
         </p>
         <div class="table-scroll"><table class="kmeans" id="kmeans"></table></div>
       </section>
@@ -113,7 +111,7 @@
           <li>Cleaning: removed rows without a customer ID, returns and cancellations, zero-price rows and duplicates.</li>
           <li>Recency, frequency and spend are each scored 1–4 by quartile. Cut-offs: <span id="cutoffs"></span>.</li>
           <li>The three scores are added (3–12): Champions 10–12, Loyal 7–9, At Risk 4–6, Lost 3.</li>
-          <li>This calculator gives the same scores as the analysis notebook for every customer; an automated test checks it.</li>
+          <li>The calculator matches the notebook for every customer (checked by <code>npm test</code>).</li>
         </ol>
       </section>
     </main>
