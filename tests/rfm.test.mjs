@@ -21,8 +21,8 @@ test("recency scores fall as days rise, boundaries inclusive", () => {
 
 test("frequency and monetary scores rise with the value", () => {
   assert.deepEqual([1, 2, 3, 4, 7, 8].map((f) => ascendingScore(f, T.frequency)), [1, 2, 2, 3, 3, 4]);
-  assert.equal(ascendingScore(341.9, T.monetary), 1);
-  assert.equal(ascendingScore(341.91, T.monetary), 2);
+  assert.equal(ascendingScore(T.monetary[0], T.monetary), 1);
+  assert.equal(ascendingScore(T.monetary[0] + 0.01, T.monetary), 2);
   assert.equal(ascendingScore(100000, T.monetary), 4);
 });
 
@@ -49,21 +49,15 @@ test("percentiles are sensible at the edges and middle", () => {
 });
 
 // The important one: does the web scorer agree with the notebook on the real customers?
-test("matches the notebook on real customers", () => {
-  let r = 0, m = 0, seg = 0;
-  for (const [recency, frequency, monetary, R, , M, segment] of customers) {
-    const s = scoreCustomer({ recency, frequency, monetary }, T);
-    r += s.r === R;
-    m += s.m === M;
-    seg += s.segment === segment;
-  }
+test("matches the notebook exactly on every real customer", () => {
   const n = customers.length;
-  assert.equal(n, 5881);
-  assert.equal(r, n, "recency scores should match exactly");
-  assert.equal(m, n, "monetary scores should match exactly");
-  // Frequency cannot match exactly: the notebook splits tied order counts by row order
-  // (rank(method='first')), so identical customers can get different scores there.
-  assert.ok(seg / n >= 0.96, `segment agreement ${(100 * seg / n).toFixed(2)}%`);
+  assert.equal(n, summary.customers);
+  let mismatches = 0;
+  for (const [recency, frequency, monetary, R, F, M, segment] of customers) {
+    const s = scoreCustomer({ recency, frequency, monetary }, T);
+    if (s.r !== R || s.f !== F || s.m !== M || s.segment !== segment) mismatches++;
+  }
+  assert.equal(mismatches, 0, `${mismatches} of ${n} customers scored differently`);
 });
 
 test("summary figures add up", () => {
