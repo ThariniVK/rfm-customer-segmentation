@@ -1,10 +1,15 @@
-import streamlit as st
-import numpy as np
+import json
+from pathlib import Path
 
-# Quartile thresholds from RFM analysis
-r_quartiles = [26, 96, 380]
-f_quartiles = [1, 3, 7]
-m_quartiles = [347.8, 897.62, 2304.18]
+import streamlit as st
+
+# Quartile thresholds from the RFM analysis. Read from the same file the web app uses
+# (written by scripts/build_web_data.py from rfm_report.xlsx), so both always agree.
+SUMMARY = Path(__file__).parent / "public" / "data" / "summary.json"
+thresholds = json.loads(SUMMARY.read_text(encoding="utf-8"))["thresholds"]
+r_quartiles = thresholds["recency"]
+f_quartiles = thresholds["frequency"]
+m_quartiles = thresholds["monetary"]
 
 def r_score(recency):
     if recency <= r_quartiles[0]:
@@ -50,7 +55,7 @@ recommendations = {
     'Champions': '🏆 Reward with loyalty perks, offer early access to new products, ask for reviews.',
     'Loyal': '💚 Enrol in loyalty programme, send personalised offers, encourage higher spend.',
     'At Risk': '⚠️ Send win-back email, offer time-limited discount, ask for feedback.',
-    'Lost': '❌ Low priority '
+    'Lost': '❌ Low priority: only re-engage with a significant offer.'
 }
 
 # App

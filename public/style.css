@@ -113,3 +113,4 @@ td.top { font-weight: 800; color: var(--brand); }
 .notes ul { margin: 8px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
 footer { padding: 16px 16px 40px; font-size: 0.85rem; }
 code { font-size: 0.85em; }
+footer a { color: var(--brand); }
